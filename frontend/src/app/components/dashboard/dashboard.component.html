@@ -1,0 +1,126 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1>Trading Dashboard</h1>
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="startTrading()" [disabled]="loading">
+        Start Trading
+      </button>
+      <button class="btn btn-secondary" (click)="stopTrading()" [disabled]="loading">
+        Stop Trading
+      </button>
+      <button class="btn btn-outline" (click)="developStrategy()" [disabled]="loading">
+        Develop Strategy
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading dashboard data...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="loadDashboardData()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="dashboard-grid">
+    <!-- System Status -->
+    <div class="card system-status">
+      <h2>System Status</h2>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="label">Trading Session:</span>
+          <span class="value" [class]="agentsStatus?.trading_session_active ? 'active' : 'inactive'">
+            {{ agentsStatus?.trading_session_active ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+        <div class="status-item">
+          <span class="label">Daily P&L:</span>
+          <span class="value" [class]="agentsStatus?.daily_pnl >= 0 ? 'positive' : 'negative'">
+            {{ formatCurrency(agentsStatus?.daily_pnl || 0) }}
+          </span>
+        </div>
+        <div class="status-item">
+          <span class="label">Total Trades:</span>
+          <span class="value">{{ agentsStatus?.total_trades || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agents Status -->
+    <div class="card agents-status">
+      <h2>AI Agents</h2>
+      <div class="agents-list">
+        <div *ngFor="let agent of agentsStatus?.agent_statuses | keyvalue" class="agent-item">
+          <div class="agent-info">
+            <span class="agent-name">{{ agent.value.name }}</span>
+            <span class="agent-description">{{ agent.value.description }}</span>
+          </div>
+          <div class="agent-status" [class]="getAgentStatusClass(agent.value)">
+            {{ getAgentStatusClass(agent.value) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trading Signals -->
+    <div class="card trading-signals">
+      <h2>Trading Signals</h2>
+      <div *ngIf="tradingSignals?.signals" class="signals-list">
+        <div *ngFor="let signal of tradingSignals.signals | keyvalue" class="signal-item">
+          <div class="signal-symbol">{{ signal.key }}</div>
+          <div class="signal-action" [class]="signal.value.action.toLowerCase()">
+            {{ signal.value.action }}
+          </div>
+          <div class="signal-confidence">
+            {{ formatPercentage(signal.value.confidence) }}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!tradingSignals?.signals || (tradingSignals.signals | keyvalue).length === 0" class="no-data">
+        No trading signals available
+      </div>
+    </div>
+
+    <!-- Current Positions -->
+    <div class="card current-positions">
+      <h2>Current Positions</h2>
+      <div *ngIf="positions?.positions && positions.positions.length > 0" class="positions-list">
+        <div *ngFor="let position of positions.positions" class="position-item">
+          <div class="position-symbol">{{ position.symbol }}</div>
+          <div class="position-size">{{ position.size }}</div>
+          <div class="position-pnl" [class]="position.unrealized_pnl >= 0 ? 'positive' : 'negative'">
+            {{ formatCurrency(position.unrealized_pnl) }}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!positions?.positions || positions.positions.length === 0" class="no-data">
+        No open positions
+      </div>
+    </div>
+
+    <!-- Risk Status -->
+    <div class="card risk-status">
+      <h2>Risk Management</h2>
+      <div *ngIf="riskStatus" class="risk-metrics">
+        <div class="risk-item">
+          <span class="label">Exposure:</span>
+          <span class="value">{{ formatPercentage(riskStatus.exposure_percentage || 0) }}</span>
+        </div>
+        <div class="risk-item">
+          <span class="label">Daily Loss:</span>
+          <span class="value" [class]="riskStatus.daily_loss >= 0 ? 'positive' : 'negative'">
+            {{ formatCurrency(riskStatus.daily_loss || 0) }}
+          </span>
+        </div>
+        <div class="risk-item">
+          <span class="label">Within Limits:</span>
+          <span class="value" [class]="riskStatus.within_limits ? 'positive' : 'negative'">
+            {{ riskStatus.within_limits ? 'Yes' : 'No' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

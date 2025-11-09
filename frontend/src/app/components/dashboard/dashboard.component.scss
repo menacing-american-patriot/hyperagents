@@ -1,0 +1,283 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    p {
+      margin-top: 1rem;
+      color: #6b7280;
+    }
+  }
+
+  .error-message {
+    text-align: center;
+    padding: 2rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    color: #dc2626;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+
+    h2 {
+      margin: 0 0 1rem 0;
+      color: #1f2937;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .status-grid {
+    display: grid;
+    gap: 1rem;
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+
+      .label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .value {
+        font-weight: 600;
+
+        &.active { color: #10b981; }
+        &.inactive { color: #6b7280; }
+        &.positive { color: #10b981; }
+        &.negative { color: #ef4444; }
+      }
+    }
+  }
+
+  .agents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .agent-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+
+      .agent-info {
+        .agent-name {
+          display: block;
+          font-weight: 600;
+          color: #1f2937;
+        }
+
+        .agent-description {
+          display: block;
+          font-size: 0.875rem;
+          color: #6b7280;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .agent-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+
+        &.active {
+          background: #d1fae5;
+          color: #065f46;
+        }
+
+        &.recent {
+          background: #fef3c7;
+          color: #92400e;
+        }
+
+        &.idle {
+          background: #f3f4f6;
+          color: #6b7280;
+        }
+      }
+    }
+  }
+
+  .signals-list, .positions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .signal-item, .position-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.75rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+    }
+
+    .signal-action {
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      &.buy {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      &.sell {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      &.hold {
+        background: #f3f4f6;
+        color: #6b7280;
+      }
+    }
+
+    .position-pnl {
+      font-weight: 600;
+
+      &.positive { color: #10b981; }
+      &.negative { color: #ef4444; }
+    }
+  }
+
+  .risk-metrics {
+    display: grid;
+    gap: 0.75rem;
+
+    .risk-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+
+      .label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .value {
+        font-weight: 600;
+
+        &.positive { color: #10b981; }
+        &.negative { color: #ef4444; }
+      }
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    padding: 2rem;
+  }
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    background: #3b82f6;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #2563eb;
+    }
+  }
+
+  &.btn-secondary {
+    background: #6b7280;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #4b5563;
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+
+    &:hover:not(:disabled) {
+      background: #3b82f6;
+      color: white;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
